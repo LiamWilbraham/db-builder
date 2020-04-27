@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700|Ubuntu:400,700');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #323232;
+  color: #f7f7f7;
+}
+
+.jumbotron {
+  color: #f7f7f7;
+  border-radius: 0;
+  background-color: #856c8b;
+  padding: 20px 45px;
+  font-family: 'Ubuntu', sans-serif;
+  margin-bottom: 40px;
+}
+
+.jumbotron p {
+  font-size: 1rem;
+}
+
+.plot-container {
+  margin: 10px 0px 20px 0px;
+  border-radius: 10px;
+  background-color: #f7f7f7;
+}
+
+.plot-header {
+  background-color: #757575;
+  color: #f7f7f7;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.plot-header h6 {
+  margin: 0px 0px 0px 10px;
+  padding: 5px;
+}
+
+.column-container {
+  margin: 0px 30px;
+}
+
+.column-left {
+  margin: 0px;
+  padding: 0px 60px 0px 0px;
+}
+
+.column {
+  margin: 0px;
+  padding: 0px 30px 0px 0px;
+}
+
+.group-selector {
+  color: #323232;
+  padding: 0rem 0rem 2rem 1rem;
+}
+
+.group-selector label {
+  color: #f7f7f7;
+}
+
+.slider-annotation {
+  margin: 0rem 0rem 0.5rem 1rem;
+}
+
+.dropdown .VirtualizedSelectFocusedOption {
+  background-color: #856c8b;
+  color: #f7f7f7;
+}
+
+.dropdown .Select-value {
+  color: #9656a1;
+  background-color: #faf4ff;
+  border-color: #9656a1;
+}
+
+.dropdown .Select-value-icon {
+  color: #9656a1;
+  background-color: #faf4ff;
+  border-color: #9656a1;
+}
+
+.dropdown .Select-value-icon:hover {
+  background-color: #d8b9c3;
+  color: #9656a1;
+}
+
+.is-focused:not(.is-open) > .Select-control {
+  border-color: #9656a1;
+  box-shadow: none;
+}
+
+.is-open > .Select-control {
+  background-color: #f7f7f7;
+}
+
+.Select-control {
+  background-color: #f7f7f7;
+}
+
+.slider-container {
+  margin: 15px 0px;
+}
+
+.rc-slider-step {
+  background-color: #9656a1;
+}
+
+.rc-slider-handle {
+  background-color: #d8b9c3;
+  border-color: #9656a1;
+}
+
+.rc-slider-handle:hover,
+.rc-slider-handle:focus {
+  border-color: #d8b9c3;
+}
+
+.button-container {
+  text-align: center;
+  margin: 0px 0px;
+}
+
+.button-import,
+.button-export {
+  margin: 5px 0px;
+  padding: 10px 80px;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.button-import {
+  background-color: #856c8b;
+  color: #f7f7f7;
+}
+
+.button-import:hover {
+  background-color: #9656a1;
+  color: #f7f7f7;
+}
+
+.button-export {
+  border-color: #856c8b;
+  color: #856c8b;
+  background-color: #f7f7f7;
+}
+
+.button-export:hover {
+  border-color: #856c8b;
+  color: #f7f7f7;
+  background-color: #d8b9c3;
+}
+
+.button-img {
+  width: 30px;
+  padding: 0px 8px 3px 0px;
+}
+
+#download-link {
+  color: #9656a1;
+}
+
+.explainer-section {
+  text-align: center;
+  background-color: #856c8b;
+  padding: 30px 300px;
+}
+
+.explainer-img {
+  width: 100px;
+  margin: 20px 0px;
+}
