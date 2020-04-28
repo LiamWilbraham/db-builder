@@ -159,7 +159,7 @@ explainer = html.Div(
                         [
                             html.H4('1. Import'),
                             html.Img(src='./assets/upload-blk1.svg', className='explainer-img'),
-                            html.P('a database of molecules as SMILES strings'),
+                            html.P('a .csv of SMILES strings to be filtered'),
                         ],
                         lg=4,
 
