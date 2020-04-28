@@ -19,87 +19,86 @@ app = dash.Dash(
     external_stylesheets=[dbc.themes.DARKLY],
     meta_tags=[
         {
-            "name": "viewport",
-            "content": "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no",
+            'name': 'viewport',
+            'content': 'width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no',
         }
     ],
 )
 
 server = app.server
-data = preprocess(None)
 
 func_group_options = [{'label': group, 'value': value} for group, value in functional_groups.items()]
 reaction_class_options = [{'label': group, 'value': value} for group, value in reaction_classes.items()]
 
-jumbotron = dbc.Jumbotron(
+header = html.Div(
     [
-        html.H2("molecular DB builder.", className="display-5"),
+        html.H2('molecular DB builder.', className='display-5'),
     ],
-    className='jumbotron'
+    className='header'
 )
 
 reaction_class_selection = html.Div(
-    className="group-selector",
+    className='group-selector',
     children=[
-        html.Label("Select Reaction Classes", id='rxn-selector-descr'),
+        html.Label('Select Reaction Classes', id='rxn-selector-descr'),
         html.Div(
             children=dcc.Dropdown(
-                className="dropdown",
-                id="rxn-class-select",
+                className='dropdown',
+                id='rxn-class-select',
                 options=reaction_class_options,
                 value=[],
                 multi=True,
                 searchable=True,
-                placeholder="Select classes..."
+                placeholder='Select classes...'
             ),
         ),
         dbc.Tooltip(
-            "Molecules compatible with these reaction classes will be added to your DB.",
-            target="rxn-selector-descr",
+            'Molecules compatible with these reaction classes will be added.',
+            target='rxn-selector-descr',
         ),
     ],
 )
 
 func_group_selection = html.Div(
-    className="group-selector",
+    className='group-selector',
     children=[
-        html.Label("Select Functional Groups", id='fgroup-selector-descr'),
+        html.Label('Select Functional Groups', id='fgroup-selector-descr'),
         html.Div(
             children=dcc.Dropdown(
-                className="dropdown",
-                id="fgroup-class-select",
+                className='dropdown',
+                id='fgroup-class-select',
                 options=func_group_options,
                 value=[],
                 multi=True,
                 searchable=True,
-                placeholder="Select groups..."
+                placeholder='Select groups...'
             ),
         ),
         dbc.Tooltip(
-            "Molecules containing these functional groups will be added to your DB.",
-            target="fgroup-selector-descr",
+            'Molecules containing these functional groups will be added.',
+            target='fgroup-selector-descr',
         ),
     ],
 )
 
 func_group_exclusion = html.Div(
-    className="group-selector",
+    className='group-selector',
     children=[
-        html.Label("Exclude Functional Groups", id='fgroup-exclude-descr'),
+        html.Label('Exclude Functional Groups', id='fgroup-exclude-descr'),
         html.Div(
             children=dcc.Dropdown(
-                className="dropdown",
-                id="fgroup-class-exclude",
+                className='dropdown',
+                id='fgroup-class-exclude',
                 options=func_group_options,
                 value=[],
                 multi=True,
                 searchable=True,
-                placeholder="Select groups..."
+                placeholder='Select groups...'
             ),
         ),
         dbc.Tooltip(
-            "Molecules containing these functional groups will be excluded from your DB.",
-            target="fgroup-exclude-descr",
+            'Molecules containing these functional groups will be excluded.',
+            target='fgroup-exclude-descr',
         ),
     ],
 )
@@ -110,9 +109,9 @@ slider_molwt = html.Div(
         dcc.Slider(
             id='slider-molwt',
             min=0,
-            max=data.molwt.max(),
-            step=1,
-            value=data.molwt.max(),
+            max=1000,
+            step=0.1,
+            value=1000,
         ),
     ]
 )
@@ -123,9 +122,9 @@ slider_logp = html.Div(
         dcc.Slider(
             id='slider-logp',
             min=0,
-            max=data.logp.max(),
+            max=20,
             step=0.1,
-            value=data.logp.max(),
+            value=20,
         ),
     ]
 )
@@ -133,10 +132,10 @@ slider_logp = html.Div(
 upload_button = dcc.Upload(
     dbc.Button(
         [
-            html.Img(src='./assets/upload1.svg', className='button-img'),
-            "Import"
+            html.Img(src='./assets/upload.svg', className='button-img'),
+            'Import'
         ],
-        size="lg", className="button-import"),
+        size='lg', className='button-import'),
     id='upload-data',
     multiple=True,
 )
@@ -145,9 +144,9 @@ upload_button = dcc.Upload(
 export_button = dbc.Button(
     [
         html.Img(src='./assets/download.svg', className='button-img'),
-        html.A("Export", id='download-link', download="rawdata.csv", href='', target='_blank'),
+        html.A('Export', id='download-link', download='rawdata.csv', href='', target='_blank'),
     ],
-    size="lg", outline=True, className="button-export"
+    size='lg', outline=True, className='button-export'
 )
 
 explainer = html.Div(
@@ -158,27 +157,27 @@ explainer = html.Div(
                 [
                     dbc.Col(
                         [
-                            html.H4("1. Import"),
-                            html.Img(src="./assets/upload1.svg", className='explainer-img'),
-                            html.P("a database of molecules as SMILES strings"),
+                            html.H4('1. Import'),
+                            html.Img(src='./assets/upload-blk1.svg', className='explainer-img'),
+                            html.P('a database of molecules as SMILES strings'),
                         ],
                         lg=4,
 
                     ),
                     dbc.Col(
                         [
-                            html.H4("2. Filter"),
-                            html.Img(src="./assets/filter.svg", className='explainer-img'),
-                            html.P("to your specifications using the selection tools"),
+                            html.H4('2. Filter'),
+                            html.Img(src='./assets/filter.svg', className='explainer-img'),
+                            html.P('to your specifications using the selection tools'),
                         ],
                         lg=4,
 
                     ),
                     dbc.Col(
                         [
-                            html.H4("3. Export"),
-                            html.Img(src="./assets/download.svg", className='explainer-img'),
-                            html.P("the filtered database"),
+                            html.H4('3. Export'),
+                            html.Img(src='./assets/download.svg', className='explainer-img'),
+                            html.P('the filtered database'),
                         ],
                         lg=4,
 
@@ -196,7 +195,7 @@ explainer = html.Div(
 
 app.layout = html.Div(
     [
-        jumbotron,
+        header,
         dbc.Row(
             [
                 dbc.Col(
@@ -217,7 +216,7 @@ app.layout = html.Div(
                                 upload_button,
                                 export_button
                             ],
-                            className="button-container"
+                            className='button-container'
                         )
                     ],
                     lg=4,
@@ -227,59 +226,78 @@ app.layout = html.Div(
                     [
                         html.Div(
                             [
-                                html.Div([html.H6("LogP")], className="plot-header"),
+                                html.Div([html.H6('LogP')], className='plot-header', id='plot-header-1'),
+                                dbc.Tooltip(
+                                    'Calculated LogP distribution of DB building blocks.',
+                                    target='plot-header-1'),
                                 dcc.Loading(
-                                    type="default",
+                                    type='default',
                                     children=[dcc.Graph(id='updating-graph1')],
-                                    className="spinner"
-                                ), ],
+                                    className='spinner'
+                                ),
+                            ],
                             className='plot-container'),
                         html.Div(
                             [
-                                html.Div([html.H6("Molecular Weight")], className="plot-header"),
+                                html.Div([html.H6('Molecular Weight')], className='plot-header', id='plot-header-2'),
+                                dbc.Tooltip(
+                                    'Calculated molwt distribution of DB building blocks.',
+                                    target='plot-header-2'
+                                ),
                                 dcc.Loading(
-                                    type="default",
+                                    type='default',
                                     children=[dcc.Graph(id='updating-graph2')],
-                                ), ],
-                            className='plot-container'),
-                    ],
-                    lg=4,
-                    className="column"
-                ),
-                dbc.Col(
-                    [
-                        html.Div(
-                            [
-                                html.Div([html.H6("Pairwise Similarity", className="plot-header-text")],
-                                         className="plot-header"),
-                                dcc.Loading(
-                                    type="default",
-                                    children=[dcc.Graph(id='updating-graph3')],
-                                    className="spinner"
-                                ), ],
-                            className='plot-container'),
-                        html.Div(
-                            [
-                                html.Div([html.H6("Functional Groups", className="plot-header-text")],
-                                         className="plot-header"),
-                                dcc.Loading(
-                                    type="default",
-                                    children=[dcc.Graph(id='updating-graph4')],
-                                    className="spinner"
                                 ),
                             ],
                             className='plot-container'),
                     ],
                     lg=4,
-                    className="column"
+                    className='column'
+                ),
+                dbc.Col(
+                    [
+                        html.Div(
+                            [
+                                html.Div([html.H6('Pairwise Similarity', className='plot-header-text')],
+                                         className='plot-header', id='plot-header-3'),
+                                dbc.Tooltip(
+                                    '''Calculated pairwise Tanimoto similarity distribution of DB building blocks
+                                    (Computed only for filtered dataset).''',
+                                    target='plot-header-3'),
+                                dcc.Loading(
+                                    type='default',
+                                    children=[dcc.Graph(id='updating-graph3')],
+                                    className='spinner'
+                                ),
+                            ],
+                            className='plot-container'),
+                        html.Div(
+                            [
+                                html.Div(
+                                    [
+                                        html.H6('Functional Groups', className='plot-header-text')
+                                    ],
+                                    className='plot-header', id='plot-header-4'),
+                                dbc.Tooltip('Count of functional groups in DB building blocks.',
+                                            target='plot-header-4'),
+                                dcc.Loading(
+                                    type='default',
+                                    children=[dcc.Graph(id='updating-graph4')],
+                                    className='spinner'
+                                ),
+                            ],
+                            className='plot-container'),
+                    ],
+                    lg=4,
+                    className='column'
                 )
             ],
-            className="column-container"
+            className='column-container'
         ),
         html.Div(id='export-data', style={'display': 'none'}),
         explainer
     ],
-    className="master-div"
+    className='master-div'
 )
 
 
@@ -311,23 +329,73 @@ def generate_histgram_content(x, x_filtered, title):
     return {
         'data': data_array,
         'layout': {
-            "autosize": True,
-            "automargin": True,
-            "showlegend": True,
-            "paper_bgcolor": "rgb(0, 0, 0, 0)",
-            "plot_bgcolor": "#f7f7f7",
-            "barmode": "overlay",
-            "bargap": "0.03",
-            "font": {"color": "grey"},
-            "height": "230",
-            "margin": dict(l=50, r=50, b=50, t=50, pad=0),
-            "yaxis": {"gridcolor": '#dedede'},
-            "legend": {
-                "x": 0.8,
-                "y": 1.0,
-                "bgcolor": "#f7f7f7",
-                "bordercolor": "Black",
-                "borderwidth": 0
+            'autosize': True,
+            'automargin': True,
+            'showlegend': True,
+            'paper_bgcolor': 'rgb(0, 0, 0, 0)',
+            'plot_bgcolor': '#f7f7f7',
+            'barmode': 'overlay',
+            'bargap': '0.01',
+            'font': {'color': 'grey'},
+            'height': '230',
+            'margin': dict(l=50, r=50, b=50, t=50, pad=0),
+            'yaxis': {'gridcolor': '#dedede'},
+            'legend': {
+                'x': 0.8,
+                'y': 1.0,
+                'bgcolor': '#f7f7f7',
+                'borderwidth': 0
+            }
+        }
+    }
+
+
+def generate_bargraph_content(x, x_filtered, title):
+
+    y_data_filtered = [x_filtered[fg].sum() for fg in list(functional_groups.keys())]
+    y_data = [x[fg].sum() for fg in list(functional_groups.keys())]
+    fgs = list(functional_groups.keys())
+
+    data_array = [
+        {
+            'x': fgs,
+            'y': y_data_filtered,
+            'type': 'bar',
+            'marker': {'color': '#9656a1'},
+            'name': 'filtered'
+        },
+    ]
+    if x is not None:
+        data_array = [
+            {
+                'x': fgs,
+                'y': y_data,
+                'type': 'bar',
+                'opacity': 1.0,
+                'marker': {'color': '#9e9e9e'},
+                'name': 'original'
+            },
+        ] + data_array
+
+    return {
+        'data': data_array,
+        'layout': {
+            'autosize': True,
+            'automargin': True,
+            'showlegend': False,
+            'paper_bgcolor': 'rgb(0, 0, 0, 0)',
+            'plot_bgcolor': '#f7f7f7',
+            'barmode': 'overlay',
+            # 'bargap': '0.03',
+            'font': {'color': 'grey'},
+            'height': '230',
+            'margin': dict(l=50, r=50, b=50, t=50, pad=0),
+            'yaxis': {'gridcolor': '#dedede'},
+            'legend': {
+                'x': 0.8,
+                'y': 1.0,
+                'bgcolor': '#f7f7f7',
+                'borderwidth': 0
             }
         }
     }
@@ -377,14 +445,13 @@ def update_logp_output(value):
     [
         State('upload-data', 'filename')
     ])
-#    State('upload-data', 'last_modified')])
 def update_output(file_contents, active_rxns, active_fgroups, inactive_fgroups, molwt_cutoff, logp_cutoff, file_name):
 
     if file_contents is not None:
 
         file_name = file_name[0]
         file_contents = file_contents[0]
-        content_type, content_string = file_contents.split(',')
+        _, content_string = file_contents.split(',')
         decoded = base64.b64decode(content_string)
 
         try:
@@ -426,19 +493,22 @@ def update_output(file_contents, active_rxns, active_fgroups, inactive_fgroups, 
     # update export link
     export_data = filtered_data['smiles']
     csv_string = export_data.to_csv(index=False, encoding='utf-8')
-    csv_string = "data:text/csv;charset=utf-8," + urllib.parse.quote(csv_string)
+    csv_string = 'data:text/csv;charset=utf-8,' + urllib.parse.quote(csv_string)
 
+    # calculate pairwise similarities of filtered data only
     similarities = calculate_pairwise_similarities(filtered_data)
 
+    # retrieve figure contents
     logp_figure = generate_histgram_content(data['logp'], filtered_data['logp'], 'LogP')
     molwt_figure = generate_histgram_content(data['molwt'], filtered_data['molwt'], 'MolWt')
     similarity_figure = generate_histgram_content(None, similarities, 'Pairwise Similarity')
+    fg_figure = generate_bargraph_content(data, filtered_data, 'Functional Groups')
 
     return [
         logp_figure,
         molwt_figure,
         similarity_figure,
-        logp_figure,
+        fg_figure,
         filtered_data.to_json(date_format='iso', orient='split'),
         csv_string
     ]

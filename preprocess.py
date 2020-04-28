@@ -1,5 +1,4 @@
 from rdkit.Chem import Fragments
-import pandas as pd
 from rdkit import Chem, DataStructs
 from rdkit.Chem import Descriptors, rdMolDescriptors
 
@@ -98,6 +97,7 @@ def Br(mol):
     total = len(mol.GetSubstructMatches(patt))
     return total
 
+
 ####################
 # REACTION CLASSES #
 ####################
@@ -163,6 +163,10 @@ def mida_deprotection(mol):
     return total
 
 
+####################
+# SIMILARITY CALCS #
+####################
+
 def calculate_pairwise_similarities(df):
 
     def calc_tanimoto_similarity(fp1, fp2):
@@ -179,13 +183,13 @@ def calculate_pairwise_similarities(df):
     return similarities
 
 
+#################
+# PREPROCESSING #
+#################
+
 def preprocess(df_from_upload):
 
-    if df_from_upload is None:
-        df = pd.read_csv("data.csv")
-    else:
-        df = df_from_upload
-
+    df = df_from_upload
     df.columns = ['smiles']
 
     preprocess_functions_fgroups = {

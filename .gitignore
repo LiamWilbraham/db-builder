@@ -1,0 +1,11 @@
+# Python
+.ipynb_checkpoints
+*.pyc
+*.pyo
+__pycache__/
+build
+*.egg-info
+
+# other
+.vscode
+data.csv

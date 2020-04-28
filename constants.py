@@ -1,4 +1,5 @@
 
+# available functional groups
 functional_groups = {
     'NH2': 'NH2',
     'NR2': 'NR2',
@@ -15,7 +16,7 @@ functional_groups = {
     'Br': 'Br',
 }
 
-
+# available reaction classes
 reaction_classes = {
     'Suzuki-Miyaura': 'suzuki-miyaura',
     'Buchwald-Hartwig': 'buchwald-hartwig',
