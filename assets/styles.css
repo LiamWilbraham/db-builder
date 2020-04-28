@@ -9,7 +9,7 @@ body {
 .header {
   color: #f7f7f7;
   border-radius: 0;
-  background-color: #856c8b;
+  background-color: #6b4275;
   padding: 20px 45px;
   font-family: 'Ubuntu', sans-serif;
   margin-bottom: 40px;
@@ -35,7 +35,7 @@ body {
 }
 
 .plot-header:hover {
-  background-color: #856c8b;
+  background-color: #6b4275;
 }
 
 .plot-header h6 {
@@ -136,7 +136,7 @@ body {
 }
 
 .button-import {
-  background-color: #856c8b;
+  background-color: #6b4275;
   color: #f7f7f7;
 }
 
@@ -146,13 +146,13 @@ body {
 }
 
 .button-export {
-  border-color: #856c8b;
-  color: #856c8b;
+  border-color: #6b4275;
+  color: #6b4275;
   background-color: #f7f7f7;
 }
 
 .button-export:hover {
-  border-color: #856c8b;
+  border-color: #6b4275;
   color: #f7f7f7;
   background-color: #d8b9c3;
 }
@@ -168,7 +168,7 @@ body {
 
 .explainer-section {
   text-align: center;
-  background-color: #856c8b;
+  background-color: #6b4275;
   padding: 30px 300px;
 }
 

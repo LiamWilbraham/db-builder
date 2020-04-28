@@ -1,4 +1,6 @@
-![Image of App](./screenshots/banner-screen.png)
+<div align="center">
+<img src="./screenshots/app-use-gif.gif">
+</div>
 
 ### Installation
 
@@ -24,7 +26,3 @@ It is recommended that you install RDkit through Anaconda, though there are
 ```
 $ conda install -c rdkit rdkit
 ```
-
-### App Layout
-
-![Image of App](./screenshots/window-screen.png)

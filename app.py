@@ -263,7 +263,7 @@ app.layout = html.Div(
                                          className='plot-header', id='plot-header-3'),
                                 dbc.Tooltip(
                                     '''Calculated pairwise Tanimoto similarity distribution of DB building blocks
-                                    (Computed only for filtered dataset).''',
+                                    (Can take significant time for large DBs, computed only for filtered dataset).''',
                                     target='plot-header-3'),
                                 dcc.Loading(
                                     type='default',
@@ -295,6 +295,8 @@ app.layout = html.Div(
             ],
             className='column-container'
         ),
+        html.Div(id='preprocessed-data-store', style={'display': 'none'}),
+        html.Div(id='filtered-data-store', style={'display': 'none'}),
         html.Div(id='export-data', style={'display': 'none'}),
         explainer
     ],
@@ -422,32 +424,21 @@ def update_logp_output(value):
     return 'LogP Cutoff: {:.2f}'.format(value)
 
 
-#########################
-# UPLOADING & FILTERING #
-#########################
+#############################
+# UPLOADING & PREPROCESSING #
+#############################
 
 @app.callback(
     [
-        Output('updating-graph1', 'figure'),
-        Output('updating-graph2', 'figure'),
-        Output('updating-graph3', 'figure'),
-        Output('updating-graph4', 'figure'),
-        Output('export-data', 'children'),
-        Output('download-link', 'href'),
-        Output('molecule-count', 'children')
+        Output('preprocessed-data-store', 'children'),
     ],
     [
         Input('upload-data', 'contents'),
-        Input('rxn-class-select', 'value'),
-        Input('fgroup-class-select', 'value'),
-        Input('fgroup-class-exclude', 'value'),
-        Input('slider-molwt', 'value'),
-        Input('slider-logp', 'value'),
     ],
     [
         State('upload-data', 'filename')
     ])
-def update_output(file_contents, active_rxns, active_fgroups, inactive_fgroups, molwt_cutoff, logp_cutoff, file_name):
+def preprocess_upload(file_contents, file_name):
 
     if file_contents is not None:
 
@@ -476,13 +467,43 @@ def update_output(file_contents, active_rxns, active_fgroups, inactive_fgroups, 
     else:
         data = preprocess(pd.DataFrame({'smiles': []}))
 
+    return [data.to_json(date_format='iso', orient='split')]
+
+
+#############
+# FILTERING #
+#############
+
+@app.callback(
+    [
+        Output('updating-graph1', 'figure'),
+        Output('updating-graph2', 'figure'),
+        Output('updating-graph4', 'figure'),
+        Output('export-data', 'children'),
+        Output('download-link', 'href'),
+        Output('molecule-count', 'children'),
+        Output('filtered-data-store', 'children'),
+    ],
+    [
+        Input('preprocessed-data-store', 'children'),
+        Input('rxn-class-select', 'value'),
+        Input('fgroup-class-select', 'value'),
+        Input('fgroup-class-exclude', 'value'),
+        Input('slider-molwt', 'value'),
+        Input('slider-logp', 'value'),
+    ],
+)
+def update_output(preprocessed_data, active_rxns, active_fgroups, inactive_fgroups, molwt_cutoff, logp_cutoff):
+
+    data = pd.read_json(preprocessed_data, orient='split')
+
     # include reaction classes and functional groups
     filtered_data = pd.DataFrame(columns=data.columns)
     for group in (active_fgroups + active_rxns):
         filtered_data = pd.concat([filtered_data, data[data[group] > 0]])
 
     # exclude functional groups
-    filtered_data = filtered_data.drop_duplicates()
+    filtered_data = filtered_data.drop_duplicates(subset=['smiles'])
     for group in inactive_fgroups:
         filtered_data = filtered_data[filtered_data[group] == 0]
 
@@ -497,25 +518,46 @@ def update_output(file_contents, active_rxns, active_fgroups, inactive_fgroups, 
     csv_string = export_data.to_csv(index=False, encoding='utf-8')
     csv_string = 'data:text/csv;charset=utf-8,' + urllib.parse.quote(csv_string)
 
-    # calculate pairwise similarities of filtered data only
-    similarities = calculate_pairwise_similarities(filtered_data)
-
     # retrieve figure contents
     logp_figure = generate_histgram_content(data['logp'], filtered_data['logp'], 'LogP')
     molwt_figure = generate_histgram_content(data['molwt'], filtered_data['molwt'], 'MolWt')
-    similarity_figure = generate_histgram_content(None, similarities, 'Pairwise Similarity')
     fg_figure = generate_bargraph_content(data, filtered_data, 'Functional Groups')
 
     return [
         logp_figure,
         molwt_figure,
-        similarity_figure,
         fg_figure,
         filtered_data.to_json(date_format='iso', orient='split'),
         csv_string,
         f'molecule count: {len(filtered_data.smiles)}',
+        filtered_data.to_json(date_format='iso', orient='split'),
     ]
 
 
+##############
+# SIMILARITY #
+##############
+
+@app.callback(
+    [
+        Output('updating-graph3', 'figure'),
+    ],
+    [
+        Input('filtered-data-store', 'children'),
+    ],
+)
+def update_similarity(filtered):
+
+    filtered_data = pd.read_json(filtered, orient='split')
+
+    # calculate pairwise similarities of filtered data only
+    similarities = calculate_pairwise_similarities(filtered_data)
+
+    # retrieve figure contents
+    similarity_figure = generate_histgram_content(None, similarities, 'Pairwise Similarity')
+
+    return [similarity_figure]
+
+
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)

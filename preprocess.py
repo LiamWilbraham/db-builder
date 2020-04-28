@@ -2,6 +2,8 @@ from rdkit.Chem import Fragments
 from rdkit import Chem, DataStructs
 from rdkit.Chem import Descriptors, rdMolDescriptors
 
+from scipy.spatial import distance
+
 
 #####################
 # FUNCTIONAL GROUPS #
@@ -12,7 +14,7 @@ def get_mol(smiles):
 
 
 def fp(mol):
-    return rdMolDescriptors.GetMorganFingerprintAsBitVect(mol, 2, nBits=512)
+    return list(rdMolDescriptors.GetMorganFingerprintAsBitVect(mol, 2, nBits=512))
 
 
 def logp(mol):
@@ -177,7 +179,7 @@ def calculate_pairwise_similarities(df):
     similarities = []
     for i in range(n_molecules):
         for j in range(n_molecules - i):
-            similarity = calc_tanimoto_similarity(df.fp.iloc[i], df.fp.iloc[j])
+            similarity = 1 - distance.jaccard(df.fp.iloc[i], df.fp.iloc[j])
             similarities.append(similarity)
 
     return similarities
