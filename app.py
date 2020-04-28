@@ -32,7 +32,8 @@ reaction_class_options = [{'label': group, 'value': value} for group, value in r
 
 header = html.Div(
     [
-        html.H2('molecular DB builder.', className='display-5'),
+        html.H2('molecular DB builder.'),
+        html.Div(id="molecule-count"),
     ],
     className='header'
 )
@@ -433,6 +434,7 @@ def update_logp_output(value):
         Output('updating-graph4', 'figure'),
         Output('export-data', 'children'),
         Output('download-link', 'href'),
+        Output('molecule-count', 'children')
     ],
     [
         Input('upload-data', 'contents'),
@@ -510,7 +512,8 @@ def update_output(file_contents, active_rxns, active_fgroups, inactive_fgroups, 
         similarity_figure,
         fg_figure,
         filtered_data.to_json(date_format='iso', orient='split'),
-        csv_string
+        csv_string,
+        f'molecule count: {len(filtered_data.smiles)}',
     ]
 
 

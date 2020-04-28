@@ -13,10 +13,12 @@ body {
   padding: 20px 45px;
   font-family: 'Ubuntu', sans-serif;
   margin-bottom: 40px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.jumbotron p {
-  font-size: 1rem;
+#molecule-count {
+  margin-top: 20px;
 }
 
 .plot-container {
